@@ -1,0 +1,39 @@
+nav{
+  margin-top: 15px;
+  padding-bottom: 45px;
+}
+a:hover{
+  text-decoration: none;
+}
+.glyphicon{
+  margin: 15px 15px 15px 0;
+  font-size: 2em;
+}
+button .icon-bar{
+  margin: 5px 0;
+}
+#map{
+  height: 400px;
+  margin-bottom: 10px;
+}
+#directions{
+  text-align: center;
+}
+#directions table{
+  margin: auto;
+  text-align: center;
+}
+input, button .form-control{
+  margin: 5px 0;
+}
+img{
+  float: right;
+  margin: 5px 10px 0px 10px;
+}
+p{
+  margin: 10px;
+  border-bottom: 1px solid lightgray;
+}
+a button{
+  margin: 5px 0 10px 0 !important;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps / Foursquare Api Application</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+  </head>
+  <body ng-app="myApp" ng-controller="myCtrl">
+    <div class="container">
+      <nav class="navbar navbar-default">
+        <div class="container">
+          <abbr title="Home | Reset App"><a href="index.html" class="pull-left glyphicon glyphicon-home"></a></abbr>
+          <div class="navbar-header">
+            <abbr title="Expand | Collapse Menu">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="true">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+            </abbr>
+          </div>
+          <div class="navbar-collapse collapse in" id="navbar-collapse">
+              <form class="navbar-form" role="search">
+                <div class="form-group">
+                  <input ng-model="currentLocation" class="form-control" type="text" placeholder="Current Location">
+                  <input ng-model="destination" class="form-control" type="text" placeholder="Area of interest">
+                  <input ng-model="interest" class="form-control" type="text" placeholder="I'm looking for...">
+                </div>
+                <button ng-click="find()" class="form-control btn btn-primary">Find on Map</button>
+              </form>
+          </div>
+        </div>
+        <div id="map"></div>
+        <div id="findings" ng-show="showFindings">
+          <p ng-repeat="result in shortResults">
+              <img ng-src="{{result.venue.categories[0].icon.prefix}}32{{result.venue.categories[0].icon.suffix}}" class="btn-success img-rounded">
+              <strong>{{$index + 1}}. {{result.venue.name}} - {{result.venue.categories[0].name}}</strong>
+              <br/>{{result.venue.location.formattedAddress[0]}}
+              <br/>
+              <a href="#top"><button ng-click="calculateAndDisplayRoute($index)" class="btn btn-primary">Get Directions</button></a>
+              <a href="#top"><button ng-click="zoomToMarker($index)" class="btn btn-primary">Show on map</button></a>
+          </p>
+        </div>
+        <div id="directions"></div>
+      </nav>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="scripts/script.js"></script>
+  </body>
+</html>
