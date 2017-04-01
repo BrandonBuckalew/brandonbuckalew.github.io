@@ -45,6 +45,32 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
         $scope.map.fitBounds(bounds);
       }
     });
+    $scope.getLocation();
+  }
+
+  $scope.getLocation = function(){
+    if (navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(function(position){
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        $scope.geocoder.geocode({'location': pos}, function(results, status) {
+          if (status === 'OK') {
+            $scope.currentLocation = results[0].formatted_address;
+            $scope.$digest();
+          }
+          else {
+            alert('Geocoder failed due to: ' + status);
+          }
+        });
+      }, function(){
+        alert("The Geolocation service failed.");
+      });
+    }
+    else{
+      alert("Your browser doesn't support geolocation.");
+    }
   }
 
   $scope.find = function(){
