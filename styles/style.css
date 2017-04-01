@@ -1,13 +1,24 @@
 nav{
   margin-top: 15px;
-  padding-bottom: 45px;
+  padding-bottom: 25px;
 }
 a:hover{
   text-decoration: none;
 }
-.glyphicon{
+.glyphicon-home{
   margin: 15px 15px 15px 0;
   font-size: 2em;
+}
+.glyphicon{
+  top: 0 !important;
+}
+form{
+  padding:0;
+  margin:auto;
+  position: relative;
+  top:0px;
+  left:0;
+  right:0;
 }
 button .icon-bar{
   margin: 5px 0;
@@ -23,7 +34,7 @@ button .icon-bar{
   margin: auto;
   text-align: center;
 }
-input, button .form-control{
+input{
   margin: 5px 0;
 }
 img{

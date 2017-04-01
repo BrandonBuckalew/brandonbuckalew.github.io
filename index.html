@@ -24,14 +24,14 @@
             </abbr>
           </div>
           <div class="navbar-collapse collapse in" id="navbar-collapse">
-              <form class="navbar-form" role="search">
-                <div class="form-group">
-                  <input ng-model="currentLocation" class="form-control" type="text" placeholder="Current Location">
-                  <input ng-model="destination" class="form-control" type="text" placeholder="Area of interest">
-                  <input ng-model="interest" class="form-control" type="text" placeholder="I'm looking for...">
-                </div>
-                <button ng-click="find()" class="form-control btn btn-primary">Find on Map</button>
-              </form>
+            <form class="navbar-form" role="search">
+              <div class="form-group">
+                <input ng-model="currentLocation" class="form-control" type="text" placeholder="Current Location">
+                <input ng-model="interest" class="form-control" type="text" placeholder="I'm looking for...">
+                <input ng-model="destination" class="form-control" type="text" placeholder="Near">
+              </div>
+              <button ng-click="find()" class="form-control btn btn-primary glyphicon glyphicon-search"></button>
+            </form>
           </div>
         </div>
         <div id="map"></div>
@@ -46,6 +46,10 @@
           </p>
         </div>
         <div id="directions"></div>
+        <div class="text-primary text-center">
+          This app was made using <a href="https://maps.google.com" target="_blank" class="text-success">Google Maps</a>
+          and <a href="https://foursquare.com" target="_blank" class="text-success">Foursquare</a>.
+        </div>
       </nav>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>

@@ -15,13 +15,13 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
 
   var googleMapsAPI = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAghhMHevtyJcyfHx-Gt4KJdwdDk08mWiM";
   var googleMapsResponse = $http.jsonp($sce.trustAsResourceUrl(googleMapsAPI), {jsonpCallbackParam: 'callback'})
-  .then(
-  function(response){
-    $scope.initMap();
-  },
-  function(error){
-    console.log("Google Map's error status: " + JSON.stringify(error.status));
-  });
+    .then(
+      function(response){
+        $scope.initMap();
+      },
+      function(error){
+        console.log("Google Map's error status: " + JSON.stringify(error.status));
+      });
 
   $scope.initMap = function(){
     $scope.directionsDisplay = new google.maps.DirectionsRenderer;
@@ -65,17 +65,17 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
           }
         });
       }, function(){
-        alert("The Geolocation service failed.");
+        alert("The Geolocation service failed. Please enter your current location.");
       });
     }
     else{
-      alert("Your browser doesn't support geolocation.");
+      alert("Your browser doesn't support geolocation. Please enter your current location.");
     }
   }
 
   $scope.find = function(){
     if ($scope.interest === "" || $scope.destination === ""){
-      alert("Make sure to fill out the area you're interested in, and what you're looking for.");
+      alert("Please fill out fields in order to search. Example: I'm looking for FOOD near ST. LOUIS, MO.");
     }
     else{
       var link = "https://api.foursquare.com/v2/search/recommendations?v=20170307&m=foursquare&limit=25&client_id=4BJF1QQMJTGSSZ33EBOFOR0FX5N0WGHL1H2M4EKKCLVZO5FP&client_secret=00J50PFKINT4AZSKORDO4KOJMNSDCNMA0EVOBEVRE4PKATIA";
@@ -103,11 +103,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
             var marker = new google.maps.Marker({
               map: $scope.map,
               position: {lat: $scope.shortResults[i].venue.location.lat, lng: $scope.shortResults[i].venue.location.lng},
-              title: (i+1).toString() + ". " + $scope.shortResults[i].venue.name + '\n' + $scope.shortResults[i].venue.location.formattedAddress[0] + '\nClick for directions',
-              index: i
-            });
-            marker.addListener('click', function(){
-              $scope.calculateAndDisplayRoute(this.index);
+              title: (i+1).toString() + ". " + $scope.shortResults[i].venue.name + '\n' + $scope.shortResults[i].venue.location.formattedAddress[0]
             });
             $scope.markers.push(marker);
             bounds.extend(marker.getPosition());
@@ -117,7 +113,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
       },
       function(error){
         $scope.showFindings = false;
-        alert("Server had problems returning your search results...");
+        alert("Server had problems returning your search results.");
       });
     }
   }
@@ -163,7 +159,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
       });
     }
     else{
-      alert("Need your current location to display route.");
+      alert(" Please fill out current location. Example: 1200 Market St, St Louis, MO.");
     }
   }
 
