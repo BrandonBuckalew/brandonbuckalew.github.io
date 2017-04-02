@@ -4,6 +4,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
   $scope.map;
   $scope.geocoder;
   $scope.markers = [];
+  $scope.infoWindows = [];
   $scope.results;
   $scope.shortResults;
   $scope.directionsDisplay;
@@ -103,7 +104,16 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
             var marker = new google.maps.Marker({
               map: $scope.map,
               position: {lat: $scope.shortResults[i].venue.location.lat, lng: $scope.shortResults[i].venue.location.lng},
-              title: (i+1).toString() + ". " + $scope.shortResults[i].venue.name + '\n' + $scope.shortResults[i].venue.location.formattedAddress[0]
+              index: i
+            });
+            var info = "<div><strong>" + (i+1).toString() + ". " + $scope.shortResults[i].venue.name + '</strong><br/>' + $scope.shortResults[i].venue.location.formattedAddress[0];
+            var infowindow = new google.maps.InfoWindow({
+              content: info
+            });
+            $scope.infoWindows.push(infowindow);
+            marker.addListener('click', function() {
+              $scope.closeInfoWindows();
+              $scope.infoWindows[this.index].open($scope.map, this);
             });
             $scope.markers.push(marker);
             bounds.extend(marker.getPosition());
@@ -172,10 +182,19 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
       $scope.markers[i].setMap(null);
     }
     $scope.markers = [];
+    $scope.infoWindows = [];
+  }
+
+  $scope.closeInfoWindows = function(){
+    for (var i = 0; i < $scope.infoWindows.length; i++){
+      $scope.infoWindows[i].setMap(null);
+    }
   }
 
   $scope.zoomToMarker = function(index){
     $scope.map.setCenter($scope.markers[index].position);
     $scope.map.setZoom(17);
+    $scope.closeInfoWindows();
+    $scope.infoWindows[index].open($scope.map, $scope.markers[index]);
   }
 });
