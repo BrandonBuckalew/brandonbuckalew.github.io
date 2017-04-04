@@ -223,7 +223,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
         $scope.count = 0;
         $scope.showMarkerCount()
       }
-    }, 5000);
+    }, 3000);
   }
 
   $scope.cancelinfoWindowLoop = function(){
