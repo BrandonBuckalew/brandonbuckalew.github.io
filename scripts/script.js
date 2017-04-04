@@ -1,10 +1,11 @@
 var app = angular.module('myApp', []);
 
-app.controller('myCtrl', function($scope, $http, $sce, $window) {
+app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   $scope.map;
   $scope.geocoder;
   $scope.markers = [];
   $scope.infoWindows = [];
+  $scope.infoWindowLoop = null;
   $scope.results;
   $scope.shortResults;
   $scope.directionsDisplay;
@@ -13,6 +14,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
   $scope.destination = "";
   $scope.interest = "";
   $scope.showFindings;
+  $scope.count;
 
   var googleMapsAPI = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAghhMHevtyJcyfHx-Gt4KJdwdDk08mWiM";
   var googleMapsResponse = $http.jsonp($sce.trustAsResourceUrl(googleMapsAPI), {jsonpCallbackParam: 'callback'})
@@ -112,6 +114,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
             });
             $scope.infoWindows.push(infowindow);
             marker.addListener('click', function() {
+              $scope.cancelinfoWindowLoop();
               $scope.closeInfoWindows();
               $scope.infoWindows[this.index].open($scope.map, this);
             });
@@ -119,6 +122,8 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
             bounds.extend(marker.getPosition());
           }
           $scope.geocodeAddress(bounds);
+          $scope.count = 0;
+          $scope.startinfoWindowLoop();
         }
       },
       function(error){
@@ -142,13 +147,14 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
 
   $scope.calculateAndDisplayRoute = function(index){
     $scope.currentLocation = $scope.currentLocation.trim();
-    if($scope.currentLocation !== ""){
+    if ($scope.currentLocation !== ""){
       $scope.directionsService.route({
         origin: $scope.currentLocation,
         destination: {lat: $scope.shortResults[index].venue.location.lat, lng: $scope.shortResults[index].venue.location.lng},
         travelMode: 'DRIVING'
       }, function(response, status){
         if (status === 'OK'){
+          $scope.cancelinfoWindowLoop();
           $scope.showFindings = false;
           $scope.$digest(); //Makes ng-show work with $scope.showFindings
           $scope.deleteMarkers();
@@ -163,7 +169,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
           });
           $scope.markers.push(startMarker, endMarker);
         }
-        else {
+        else{
           alert("Directions request failed due to: " + status);
         }
       });
@@ -191,10 +197,39 @@ app.controller('myCtrl', function($scope, $http, $sce, $window) {
     }
   }
 
-  $scope.zoomToMarker = function(index){
+  $scope.showMarker = function(index){
     $scope.map.setCenter($scope.markers[index].position);
-    $scope.map.setZoom(17);
     $scope.closeInfoWindows();
     $scope.infoWindows[index].open($scope.map, $scope.markers[index]);
   }
+
+  $scope.zoomToMarker = function(index){
+    $scope.cancelinfoWindowLoop();
+    $scope.map.setZoom(17);
+    $scope.showMarker(index);
+  }
+
+  $scope.showMarkerCount = function(){
+    $scope.showMarker($scope.count);
+    $scope.count = $scope.count + 1;
+  }
+
+  $scope.startinfoWindowLoop = function(){
+    $scope.infoWindowLoop = $interval(function(){
+      if ($scope.count < $scope.markers.length){
+        $scope.showMarkerCount();
+      }
+      else{
+        $scope.count = 0;
+        $scope.showMarkerCount()
+      }
+    }, 5000);
+  }
+
+  $scope.cancelinfoWindowLoop = function(){
+    if(angular.isDefined($scope.infoWindowLoop)){
+      $interval.cancel($scope.infoWindowLoop);
+    }
+  }
+  
 });

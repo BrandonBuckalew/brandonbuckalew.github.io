@@ -1,24 +1,22 @@
 nav{
   margin-top: 15px;
-  padding-bottom: 25px;
+  padding-bottom: 15px;
 }
 a:hover{
   text-decoration: none;
 }
 .glyphicon-home{
-  margin: 15px 15px 15px 0;
+  margin: 15px 0;
   font-size: 2em;
+}
+form{
+  overflow: hidden;
+}
+.glyphicon-search{
+  margin-right: 20px;
 }
 .glyphicon{
   top: 0 !important;
-}
-form{
-  padding:0;
-  margin:auto;
-  position: relative;
-  top:0px;
-  left:0;
-  right:0;
 }
 button .icon-bar{
   margin: 5px 0;
@@ -47,4 +45,7 @@ p{
 }
 a button{
   margin: 5px 0 10px 0 !important;
+}
+.text-center{
+  margin-top: 15px;
 }

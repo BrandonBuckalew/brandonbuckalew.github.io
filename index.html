@@ -24,7 +24,7 @@
             </abbr>
           </div>
           <div class="navbar-collapse collapse in" id="navbar-collapse">
-            <form class="navbar-form" role="search">
+            <form class="navbar-form navbar-right" role="search">
               <div class="form-group">
                 <input ng-model="currentLocation" class="form-control" type="text" placeholder="Current Location">
                 <input ng-model="interest" class="form-control" type="text" placeholder="I'm looking for...">
@@ -36,7 +36,7 @@
         </div>
         <div id="map"></div>
         <div id="findings" ng-show="showFindings">
-          <p ng-repeat="result in shortResults">
+          <p id="{{$index}}" ng-repeat="result in shortResults">
               <img ng-src="{{result.venue.categories[0].icon.prefix}}32{{result.venue.categories[0].icon.suffix}}" class="btn-success img-rounded">
               <strong>{{$index + 1}}. {{result.venue.name}} - {{result.venue.categories[0].name}}</strong>
               <br/>{{result.venue.location.formattedAddress[0]}}
@@ -46,9 +46,9 @@
           </p>
         </div>
         <div id="directions"></div>
-        <div class="text-primary text-center">
-          This app was made using <a href="https://maps.google.com" target="_blank" class="text-success">Google Maps</a>
-          and <a href="https://foursquare.com" target="_blank" class="text-success">Foursquare</a>.
+        <div class="text-success text-center">
+          This app was made using the <a href="https://maps.google.com" target="_blank" class="text-primary">Google Maps</a>
+          and <a href="https://foursquare.com" target="_blank" class="text-primary">Foursquare</a> API.
         </div>
       </nav>
     </div>
