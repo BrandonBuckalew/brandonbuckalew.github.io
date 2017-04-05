@@ -3,6 +3,7 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   $scope.map;
   $scope.geocoder;
+  $scope.travelMode = "Driving";
   $scope.markers = [];
   $scope.infoWindows = [];
   $scope.infoWindowLoop = null;
@@ -14,7 +15,9 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   $scope.destination = "";
   $scope.interest = "";
   $scope.showFindings;
+  $scope.showDirections;
   $scope.count;
+  $scope.index = -1;
 
   var googleMapsAPI = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAghhMHevtyJcyfHx-Gt4KJdwdDk08mWiM";
   var googleMapsResponse = $http.jsonp($sce.trustAsResourceUrl(googleMapsAPI), {jsonpCallbackParam: 'callback'})
@@ -98,7 +101,9 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
           alert("Search couldn't find \"" + $scope.interest + "\" around " + $scope.destination);
         }
         else{
+          $scope.index = -1;
           $scope.showFindings = true;
+          $scope.showDirections = false;
           $scope.results = angular.fromJson(response.data);
           $scope.shortResults = $scope.results.response.group.results;
           var bounds = new google.maps.LatLngBounds();
@@ -116,6 +121,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
             marker.addListener('click', function() {
               $scope.cancelinfoWindowLoop();
               $scope.closeInfoWindows();
+              $scope.map.setCenter($scope.markers[this.index].position);
               $scope.infoWindows[this.index].open($scope.map, this);
             });
             $scope.markers.push(marker);
@@ -123,6 +129,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
           }
           $scope.geocodeAddress(bounds);
           $scope.count = 0;
+          $scope.cancelinfoWindowLoop();
           $scope.startinfoWindowLoop();
         }
       },
@@ -146,16 +153,18 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   }
 
   $scope.calculateAndDisplayRoute = function(index){
+    $scope.index = index;
     $scope.currentLocation = $scope.currentLocation.trim();
     if ($scope.currentLocation !== ""){
       $scope.directionsService.route({
         origin: $scope.currentLocation,
         destination: {lat: $scope.shortResults[index].venue.location.lat, lng: $scope.shortResults[index].venue.location.lng},
-        travelMode: 'DRIVING'
+        travelMode: $scope.travelMode.toUpperCase() // Default is 'DRIVING'
       }, function(response, status){
         if (status === 'OK'){
           $scope.cancelinfoWindowLoop();
           $scope.showFindings = false;
+          $scope.showDirections = true;
           $scope.$digest(); //Makes ng-show work with $scope.showFindings
           $scope.deleteMarkers();
           $scope.directionsDisplay.setDirections(response);
@@ -180,7 +189,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   }
 
   $scope.clearDirections = function(){
-    $scope.directionsDisplay.set('directions',null);
+    $scope.showDirections = false;
   }
 
   $scope.deleteMarkers = function(){
@@ -231,5 +240,10 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
       $interval.cancel($scope.infoWindowLoop);
     }
   }
-  
+
+  $scope.checkForIndex = function(){
+    if($scope.index > -1){
+      $scope.calculateAndDisplayRoute($scope.index);
+    }
+  }
 });

@@ -29,8 +29,8 @@
                 <input ng-model="currentLocation" class="form-control" type="text" placeholder="Current Location">
                 <input ng-model="interest" class="form-control" type="text" placeholder="I'm looking for...">
                 <input ng-model="destination" class="form-control" type="text" placeholder="Near">
+                <button ng-click="find()" class="form-control btn btn-primary glyphicon glyphicon-search"></button>
               </div>
-              <button ng-click="find()" class="form-control btn btn-primary glyphicon glyphicon-search"></button>
             </form>
           </div>
         </div>
@@ -45,9 +45,21 @@
               <a href="#top"><button ng-click="zoomToMarker($index)" class="btn btn-primary">Show on map</button></a>
           </p>
         </div>
-        <div id="directions"></div>
+        <div id="directions" ng-show="showDirections">
+          <div class="row">
+            <div class="col-xs-1 col-sm-2 col-md-3"></div>
+            <div class="col-xs-10 col-sm-8 col-md-6">
+              <select ng-model="travelMode" class="form-control" ng-click="checkForIndex()">
+                <option>Driving</option>
+                <option>Walking</option>
+                <option>Bicycling</option>
+              </select>
+            </div>
+            <div class="col-xs-1 col-sm-2 col-md-3"></div>
+          </div>
+        </div>
         <div class="text-success text-center">
-          This app was made using the <a href="https://maps.google.com" target="_blank" class="text-primary">Google Maps</a>
+          This site was made using the <a href="https://maps.google.com" target="_blank" class="text-primary">Google Maps</a>
           and <a href="https://foursquare.com" target="_blank" class="text-primary">Foursquare</a> API.
         </div>
       </nav>
