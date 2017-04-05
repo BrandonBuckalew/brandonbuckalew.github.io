@@ -242,6 +242,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   }
 
   $scope.checkForIndex = function(){
+    $scope.$digest();
     if($scope.index > -1){
       $scope.calculateAndDisplayRoute($scope.index);
     }
