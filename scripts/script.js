@@ -12,7 +12,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   $scope.directionsDisplay;
   $scope.directionsService;
   $scope.currentLocation = "";
-  $scope.destination = "Union, MO";
+  $scope.destination = "St. Louis, MO";
   $scope.interest = "Food";
   $scope.showFindings;
   $scope.showDirections;
@@ -114,10 +114,9 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
               position: {lat: $scope.shortResults[i].venue.location.lat, lng: $scope.shortResults[i].venue.location.lng},
               index: i
             });
-            function getDirections(index){
-              $scope.calculateAndDisplayRoute(index);
-            }
-            var info = "<div><strong>" + (i+1).toString() + ". " + $scope.shortResults[i].venue.name + '</strong><br/>' + $scope.shortResults[i].venue.location.formattedAddress[0] + "<br/><a href='#" + marker.index + "'>Go to listing</a>";
+            var info = "<strong>" + (i+1).toString() + ". " + $scope.shortResults[i].venue.name + "</strong>"
+              + "<br/>" + $scope.shortResults[i].venue.location.formattedAddress[0]
+              + "<br/><a href='#" + marker.index + "'>Go to listing</a>";
             var infowindow = new google.maps.InfoWindow({
               content: info
             });
@@ -252,4 +251,5 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
       $scope.calculateAndDisplayRoute($scope.index);
     }
   }
+  
 });
