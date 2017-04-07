@@ -12,10 +12,11 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
   $scope.directionsDisplay;
   $scope.directionsService;
   $scope.currentLocation = "";
-  $scope.destination = "";
-  $scope.interest = "";
+  $scope.destination = "Union, MO";
+  $scope.interest = "Food";
   $scope.showFindings;
   $scope.showDirections;
+  $scope.radius = null;
   $scope.count;
   $scope.index = -1;
 
@@ -85,7 +86,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
     }
     else{
       var link = "https://api.foursquare.com/v2/search/recommendations?v=20170307&m=foursquare&limit=25&client_id=4BJF1QQMJTGSSZ33EBOFOR0FX5N0WGHL1H2M4EKKCLVZO5FP&client_secret=00J50PFKINT4AZSKORDO4KOJMNSDCNMA0EVOBEVRE4PKATIA";
-      var userInput = "&query=" + $scope.interest + "&near=" + $scope.destination;
+      var userInput = ($scope.radius !== null)? "&query=" + $scope.interest + "&near=" + $scope.destination + "&radius=" + $scope.radius : "&query=" + $scope.interest + "&near=" + $scope.destination;
       var url = link + userInput;
       var foursquareResponse = $http.jsonp($sce.trustAsResourceUrl(url), {jsonpCallbackParam: 'callback'})
       .then(
@@ -159,7 +160,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
       $scope.directionsService.route({
         origin: $scope.currentLocation,
         destination: {lat: $scope.shortResults[index].venue.location.lat, lng: $scope.shortResults[index].venue.location.lng},
-        travelMode: $scope.travelMode.toUpperCase() // Default is 'DRIVING'
+        travelMode: $scope.travelMode.toUpperCase()
       }, function(response, status){
         if (status === 'OK'){
           $scope.cancelinfoWindowLoop();
@@ -167,6 +168,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
           $scope.showDirections = true;
           $scope.$digest(); //Makes ng-show work with $scope.showFindings
           $scope.deleteMarkers();
+          $scope.directionsDisplay.setMap($scope.map);
           $scope.directionsDisplay.setDirections(response);
           var responseData = angular.fromJson(response.routes[0].legs[0]);
           var bounds = new google.maps.LatLngBounds();
@@ -190,6 +192,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
 
   $scope.clearDirections = function(){
     $scope.showDirections = false;
+    $scope.directionsDisplay.setMap(null);
   }
 
   $scope.deleteMarkers = function(){
@@ -246,4 +249,5 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
       $scope.calculateAndDisplayRoute($scope.index);
     }
   }
+
 });
