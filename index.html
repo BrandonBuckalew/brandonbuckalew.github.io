@@ -60,8 +60,8 @@
               <strong>{{$index + 1}}. {{result.venue.name}} - {{result.venue.categories[0].name}}</strong>
               <br/>{{result.venue.location.formattedAddress[0]}}
               <br/>
-              <a href="#top"><button ng-click="calculateAndDisplayRoute($index)" class="btn btn-primary">Get Directions</button></a>
-              <a href="#top"><button ng-click="zoomToMarker($index)" class="btn btn-primary">Show on map</button></a>
+              <a href="#map"><button ng-click="calculateAndDisplayRoute($index)" class="btn btn-primary">Get Directions</button></a>
+              <a href="#map"><button ng-click="zoomToMarker($index)" class="btn btn-primary">Show on map</button></a>
           </p>
         </div>
         <div id="directions" ng-show="showDirections">

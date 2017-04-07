@@ -72,17 +72,17 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
           }
         });
       }, function(){
-        alert("The Geolocation service failed. Please enter your current location.");
+        alert("The Geolocation service failed.\nPlease enter your current location.");
       });
     }
     else{
-      alert("Your browser doesn't support geolocation. Please enter your current location.");
+      alert("Your browser doesn't support geolocation.\nPlease enter your current location.");
     }
   }
 
   $scope.find = function(){
     if ($scope.interest === "" || $scope.destination === ""){
-      alert("Please fill out fields in order to search. Example: I'm looking for FOOD near ST. LOUIS, MO.");
+      alert("Please fill out fields in order to search.\nExample: I'm looking for FOOD near ST. LOUIS, MO.");
     }
     else{
       var link = "https://api.foursquare.com/v2/search/recommendations?v=20170307&m=foursquare&limit=25&client_id=4BJF1QQMJTGSSZ33EBOFOR0FX5N0WGHL1H2M4EKKCLVZO5FP&client_secret=00J50PFKINT4AZSKORDO4KOJMNSDCNMA0EVOBEVRE4PKATIA";
@@ -114,7 +114,10 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
               position: {lat: $scope.shortResults[i].venue.location.lat, lng: $scope.shortResults[i].venue.location.lng},
               index: i
             });
-            var info = "<div><strong>" + (i+1).toString() + ". " + $scope.shortResults[i].venue.name + '</strong><br/>' + $scope.shortResults[i].venue.location.formattedAddress[0];
+            function getDirections(index){
+              $scope.calculateAndDisplayRoute(index);
+            }
+            var info = "<div><strong>" + (i+1).toString() + ". " + $scope.shortResults[i].venue.name + '</strong><br/>' + $scope.shortResults[i].venue.location.formattedAddress[0] + "<br/><a href='#" + marker.index + "'>Go to listing</a>";
             var infowindow = new google.maps.InfoWindow({
               content: info
             });
@@ -186,7 +189,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
       });
     }
     else{
-      alert(" Please fill out current location. Example: 1200 Market St, St Louis, MO.");
+      alert(" Please fill out current location.\nExample: 1200 Market St, St Louis, MO.");
     }
   }
 
@@ -249,5 +252,4 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
       $scope.calculateAndDisplayRoute($scope.index);
     }
   }
-
 });
