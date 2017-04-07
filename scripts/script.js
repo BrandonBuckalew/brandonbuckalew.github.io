@@ -189,7 +189,7 @@ app.controller('myCtrl', function($scope, $http, $sce, $window, $interval) {
       });
     }
     else{
-      alert(" Please fill out current location.\nExample: 1200 Market St, St Louis, MO.");
+      alert("Please fill out current location.\nExample: 1200 Market St, St Louis, MO.");
     }
   }
 
